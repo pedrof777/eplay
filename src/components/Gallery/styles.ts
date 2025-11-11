@@ -79,9 +79,8 @@ export const ModalContent = styled.div`
     }
   }
 
-  header + div {
-    display: flex;
-    justify-content: center;
+  > img {
+    width: 100%;
   }
 
   img,

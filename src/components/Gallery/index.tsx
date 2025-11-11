@@ -5,40 +5,21 @@ import Section from '../Section'
 import { Action, Item, Items, Modal, ModalContent } from './styles'
 import { GalleryItem } from '../../pages/Home'
 
-import herme from '../../assets/images/hermionia.png'
 import zoom from '../../assets/images/zoom.png'
 import play from '../../assets/images/play.png'
 import close from '../../assets/images/fechar.png'
 
-const mock: GalleryItem[] = [
-  {
-    type: 'image',
-    url: herme
-  },
-  {
-    type: 'image',
-    url: herme
-  },
-  {
-    type: 'image',
-    url: herme
-  },
-  {
-    type: 'video',
-    url: 'https://www.youtube.com/embed/BtyBjOW8sGY?si=6PcXK58nnJEbxs79'
-  }
-]
-
 type Props = {
   defaultCover: string
   name: string
+  items: GalleryItem[]
 }
 
 interface ModalState extends GalleryItem {
   isVisible: boolean
 }
 
-const Gallery = ({ defaultCover, name }: Props) => {
+const Gallery = ({ defaultCover, name, items }: Props) => {
   const [modal, setModal] = useState<ModalState>({
     isVisible: false,
     type: 'image',
@@ -67,7 +48,7 @@ const Gallery = ({ defaultCover, name }: Props) => {
     <>
       <Section title="Galeria" background="black">
         <Items>
-          {mock.map((media, index) => (
+          {items.map((media, index) => (
             <Item
               key={media.url}
               onClick={() => {
@@ -104,13 +85,12 @@ const Gallery = ({ defaultCover, name }: Props) => {
               }}
             />
           </header>
-          <div>
-            {modal.type === 'image' ? (
-              <img src={modal.url} />
-            ) : (
-              <iframe frameBorder={0} src={modal.url} />
-            )}
-          </div>
+
+          {modal.type === 'image' ? (
+            <img src={modal.url} />
+          ) : (
+            <iframe frameBorder={0} src={modal.url} />
+          )}
         </ModalContent>
         <div
           onClick={() => {
