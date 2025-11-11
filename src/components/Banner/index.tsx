@@ -1,28 +1,45 @@
-import bannerImg from '../../assets/images/banner-homem-aranha.png'
+import { useEffect, useState } from 'react'
+
+import { Game } from '../../pages/Home'
 import Button from '../Button'
 import Tag from '../Tag'
+import { formataPreco } from '../ProductList'
+
 import { Imagem, Preco, Titulo } from './styles'
 
-const Banner = () => (
-  <Imagem style={{ backgroundImage: `url(${bannerImg})` }}>
-    <div className="container">
-      <Tag size="big">Destaque do dia </Tag>
-      <div>
-        <Titulo>Marvel &apos;s Spider-Man: Miles Morales PS4 & PS5</Titulo>
-        <Preco>
-          De <span>R$ 250,00</span> <br />
-          Por apenas R$ 99,00
-        </Preco>
+const Banner = () => {
+  const [game, setGame] = useState<Game>()
+
+  useEffect(() => {
+    fetch('https://api-ebac.vercel.app/api/eplay/destaque')
+      .then((res) => res.json())
+      .then((res) => setGame(res))
+  }, [])
+
+  if (!game) {
+    return <h3>Carregando...</h3>
+  }
+  return (
+    <Imagem style={{ backgroundImage: `url(${game.media.cover})` }}>
+      <div className="container">
+        <Tag size="big">Destaque do dia </Tag>
+        <div>
+          <Titulo>{game.name}</Titulo>
+          <Preco>
+            De <span>{formataPreco(game.prices.old)}</span> <br />
+            Por apenas {formataPreco(game.prices.current)}
+          </Preco>
+        </div>
+        <Button
+          type="link"
+          to="/produto"
+          title="Clique aqui para aproveitar esta oferta"
+        >
+          Aproveitar
+        </Button>
       </div>
-      <Button
-        type="link"
-        to="/produto"
-        title="Clique aqui para aproveitar esta oferta"
-      >
-        Aproveitar
-      </Button>
-    </div>
-  </Imagem>
-)
+    </Imagem>
+  )
+}
 
 export default Banner
