@@ -1,50 +1,52 @@
 import ProductList from '../../components/ProductList'
-import { Game } from '../Home'
-
-import residentEvil from '../../assets/images/resident.png'
-import diablo from '../../assets/images/diablo.png'
-import fifa23 from '../../assets/images/fifa23.png'
-import zelda from '../../assets/images/zelda.png'
-import { useEffect, useState } from 'react'
+import {
+  useGetActionGamesQuery,
+  useGetFigthGamesQuery,
+  useGetRpgGamesQuery,
+  useGetSimulationGamesQuery,
+  useGetSportGamesQuery
+} from '../../services/api'
 
 const Home = () => {
-  const [gameAcao, setGameAcao] = useState<Game[]>([])
-  const [gameRpg, setGameRpg] = useState<Game[]>([])
-  const [gameSimulacao, setGameSimulacao] = useState<Game[]>([])
-  const [gameLuta, setGameLuta] = useState<Game[]>([])
-  const [gameEsporte, setGameEsporte] = useState<Game[]>([])
+  const { data: actionGames } = useGetActionGamesQuery()
+  const { data: rpgGames } = useGetRpgGamesQuery()
+  const { data: simulationGames } = useGetSimulationGamesQuery()
+  const { data: figthGames } = useGetFigthGamesQuery()
+  const { data: sportGames } = useGetSportGamesQuery()
 
-  useEffect(() => {
-    fetch('https://api-ebac.vercel.app/api/eplay/acao')
-      .then((res) => res.json())
-      .then((res) => setGameAcao(res))
+  if (actionGames && rpgGames && simulationGames && figthGames && sportGames) {
+    return (
+      <>
+        <ProductList games={rpgGames} title="RPG" background="black" id="rpg" />
+        <ProductList
+          games={actionGames}
+          title="Ação"
+          background="gray"
+          id="action"
+        />
+        <ProductList
+          games={sportGames}
+          title="Esporte"
+          background="black"
+          id="sport"
+        />
+        <ProductList
+          games={figthGames}
+          title="Luta"
+          background="gray"
+          id="figth"
+        />
+        <ProductList
+          games={simulationGames}
+          title="Simulação"
+          background="black"
+          id="simulation"
+        />
+      </>
+    )
+  }
 
-    fetch('https://api-ebac.vercel.app/api/eplay/rpg')
-      .then((res) => res.json())
-      .then((res) => setGameRpg(res))
-
-    fetch('https://api-ebac.vercel.app/api/eplay/simulacao')
-      .then((res) => res.json())
-      .then((res) => setGameSimulacao(res))
-
-    fetch('https://api-ebac.vercel.app/api/eplay/luta')
-      .then((res) => res.json())
-      .then((res) => setGameLuta(res))
-
-    fetch('https://api-ebac.vercel.app/api/eplay/esporte')
-      .then((res) => res.json())
-      .then((res) => setGameEsporte(res))
-  }, [])
-
-  return (
-    <>
-      <ProductList games={gameRpg} title="RPG" background="black" />
-      <ProductList games={gameAcao} title="Ação" background="gray" />
-      <ProductList games={gameEsporte} title="Esporte" background="black" />
-      <ProductList games={gameLuta} title="Luta" background="gray" />
-      <ProductList games={gameSimulacao} title="Simulação" background="black" />
-    </>
-  )
+  return <h4>Carregando...</h4>
 }
 
 export default Home
