@@ -1,7 +1,7 @@
 import { ButtonContainer, ButtonLink } from './styles'
 
 export type Props = {
-  type: 'button' | 'link'
+  type: 'button' | 'link' | 'submit'
   title: string
   to?: string
   onClick?: () => void
@@ -22,6 +22,19 @@ const Button = ({
       <ButtonContainer
         variant={variant}
         type="button"
+        title={title}
+        onClick={onClick}
+      >
+        {children}
+      </ButtonContainer>
+    )
+  }
+
+  if (type === 'submit') {
+    return (
+      <ButtonContainer
+        variant={variant}
+        type="submit"
         title={title}
         onClick={onClick}
       >
