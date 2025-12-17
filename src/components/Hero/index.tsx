@@ -39,7 +39,7 @@ const Hero = ({ game }: Props) => {
           </p>
           {game.prices.current && (
             <Button
-              variant="secondary"
+              $variant="secondary"
               type="button"
               title="Clique aqui para adicionar este jogo ao carrinho"
               onClick={addToCart}
